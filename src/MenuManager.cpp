@@ -578,12 +578,12 @@ void MenuManager::method_202(Graphics* g)
 {
     if (currentGameMenu != nullptr && !field_377) {
         micro->gameCanvas->drawGame(g);
-        fillCanvasWithImage(g);
+        drawRasterImage(g);
         currentGameMenu->render_76(g);
     }
 }
 
-void MenuManager::fillCanvasWithImage(Graphics* graphics)
+void MenuManager::drawRasterImage(Graphics* graphics)
 {
     for (int y = 0; y < getCanvasHeight(); y += rasterImage->getHeight()) {
         for (int x = 0; x < getCanvasWidth(); x += rasterImage->getWidth()) {

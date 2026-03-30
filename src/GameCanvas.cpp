@@ -585,18 +585,18 @@ void GameCanvas::method_168(Command* var1, Displayable* var2)
     }
 }
 
-void GameCanvas::keyPressed(int var1)
+void GameCanvas::keyPressed(int keyCode)
 {
     if (Micro::isInGameMenu && menuManager != nullptr) {
-        menuManager->processKeyCode(var1);
+        menuManager->processKeyCode(keyCode);
     }
 
-    processKeyPressed(var1);
+    processKeyPressed(keyCode);
 }
 
-void GameCanvas::keyReleased(int var1)
+void GameCanvas::keyReleased(int keyCode)
 {
-    processKeyReleased(var1);
+    processKeyReleased(keyCode);
 }
 
 void GameCanvas::commandAction(Command* var1, Displayable* var2)

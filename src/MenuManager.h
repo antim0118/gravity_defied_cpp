@@ -127,7 +127,7 @@ private:
 
     void addTextRender(GameMenu* gameMenu, std::string text);
     void method_197();
-    void fillCanvasWithImage(Graphics* graphics);
+    void drawRasterImage(Graphics* graphics);
     void processNonFireKeyCode(int keyCode);
     std::vector<int8_t> method_216(int var1, int8_t var2);
     int8_t method_217(int var1, int8_t var2);
