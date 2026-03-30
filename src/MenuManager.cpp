@@ -456,23 +456,23 @@ int MenuManager::getCanvasWidth()
     return micro->gameCanvas->getWidth();
 }
 
-void MenuManager::method_201(int var1)
+void MenuManager::runMenu(MenuTypes menuType)
 {
     field_377 = false;
-    switch (var1) {
-    case 0:
+    switch (menuType) {
+    case MENU_MAIN:
         method_1(gameMenuMain, false);
         micro->gamePhysics->enableGenerateInputAI();
         field_357 = true;
         break;
-    case 1:
+    case MENU_INGAME:
         field_354 = settingStringLevel->getCurrentOptionPos();
         field_355 = settingsStringTrack->getCurrentOptionPos();
         field_333->setText("Restart: " + micro->levelLoader->getName(field_354, field_355));
         field_357 = false;
         method_1(gameMenuIngame, false);
         break;
-    case 2: {
+    case MENU_FINISHED: {
         field_362 = Time::currentTimeMillis();
         gameMenuFinished->clearVector();
         field_354 = settingStringLevel->getCurrentOptionPos();
@@ -574,12 +574,12 @@ void MenuManager::method_201(int var1)
     }
 }
 
-void MenuManager::method_202(Graphics* var1)
+void MenuManager::method_202(Graphics* g)
 {
     if (currentGameMenu != nullptr && !field_377) {
-        micro->gameCanvas->drawGame(var1);
-        fillCanvasWithImage(var1);
-        currentGameMenu->render_76(var1);
+        micro->gameCanvas->drawGame(g);
+        fillCanvasWithImage(g);
+        currentGameMenu->render_76(g);
     }
 }
 

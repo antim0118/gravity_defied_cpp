@@ -175,7 +175,7 @@ void Micro::run()
 
     gameCanvas->setCommandListener(gameCanvas);
     restart(false);
-    menuManager->method_201(0);
+    menuManager->runMenu(MENU_MAIN);
     if (menuManager->method_196()) {
         restart(true);
     }
@@ -193,7 +193,7 @@ void Micro::run()
         bool var10000;
         try {
             if (isInGameMenu) {
-                menuManager->method_201(1);
+                menuManager->runMenu(MENU_INGAME);
                 if (menuManager->method_196()) {
                     restart(true);
                 }
@@ -255,7 +255,7 @@ void Micro::run()
 
                     goalLoop();
                     menuManager->method_215(gameTimeMs / 10L);
-                    menuManager->method_201(2);
+                    menuManager->runMenu(MENU_FINISHED);
                     if (menuManager->method_196()) {
                         restart(true);
                     }

@@ -6,6 +6,13 @@
 
 #include "IMenuManager.h"
 
+enum MenuTypes
+{
+    MENU_MAIN = 0,
+    MENU_INGAME = 1,
+    MENU_FINISHED = 2
+};
+
 class Micro;
 class RecordManager;
 class Command;
@@ -143,7 +150,7 @@ public:
     void repaint();
     int getCanvasHeight();
     int getCanvasWidth();
-    void method_201(int var1);
+    void runMenu(MenuTypes menuType);
     void method_206(Command* var1, Displayable* var2);
     GameMenu* getGameMenu();
     void method_1(GameMenu* gm, bool var2);
