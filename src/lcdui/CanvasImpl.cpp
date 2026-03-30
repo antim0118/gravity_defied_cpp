@@ -41,7 +41,6 @@ int CanvasImpl::getHeight()
 void CanvasImpl::processEvents()
 {
     int analog = 80;
-    printf("controls_AnalogX() = %d\n", controls_AnalogX());
     controls_read();
 
     if (controls_pressed(PSP_CTRL_START))// if (controls_released(PSP_CTRL_START))
@@ -51,16 +50,18 @@ void CanvasImpl::processEvents()
     if (controls_pressed(PSP_CTRL_CROSS))
         canvas->publicKeyPressed(Canvas::Keys::FIRE);
     
-    if (controls_pressed(PSP_CTRL_LEFT)
-        || (!AnalogLeft && controls_AnalogX() < -analog)) {
+    if (controls_pressed(PSP_CTRL_LEFT)) canvas->publicKeyPressed(Canvas::Keys::LEFT);
+    if (!AnalogLeft && controls_AnalogX() < -analog) {
         AnalogLeft = true;
         canvas->publicKeyPressed(Canvas::Keys::LEFT);
     }
-    if (controls_pressed(PSP_CTRL_RIGHT)
-        || (!AnalogRight && controls_AnalogX() > analog)) {
+    
+    if (controls_pressed(PSP_CTRL_RIGHT)) canvas->publicKeyPressed(Canvas::Keys::RIGHT);
+    if (!AnalogRight && controls_AnalogX() > analog) {
         AnalogRight = true;
         canvas->publicKeyPressed(Canvas::Keys::RIGHT);
     }
+    
     if (controls_pressed(PSP_CTRL_UP) || controls_pressed(PSP_CTRL_RTRIGGER)) canvas->publicKeyPressed(Canvas::Keys::UP);
     if (controls_pressed(PSP_CTRL_DOWN) || controls_pressed(PSP_CTRL_LTRIGGER)) canvas->publicKeyPressed(Canvas::Keys::DOWN);
 
@@ -68,16 +69,18 @@ void CanvasImpl::processEvents()
     if (controls_released(PSP_CTRL_CROSS))
         canvas->publicKeyReleased(Canvas::Keys::FIRE);
 
-    if (controls_released(PSP_CTRL_LEFT)
-        || (AnalogLeft && controls_AnalogX() > -analog)) {
+    if (controls_released(PSP_CTRL_LEFT)) canvas->publicKeyReleased(Canvas::Keys::LEFT);
+    if (AnalogLeft && controls_AnalogX() > -analog) {
         AnalogLeft = false;
         canvas->publicKeyReleased(Canvas::Keys::LEFT);
     }
-    if (controls_released(PSP_CTRL_RIGHT)
-        || (AnalogRight && controls_AnalogX() < analog)) {
+    
+    if (controls_released(PSP_CTRL_RIGHT)) canvas->publicKeyReleased(Canvas::Keys::RIGHT);
+    if (AnalogRight && controls_AnalogX() < analog) {
         AnalogRight = false;
         canvas->publicKeyReleased(Canvas::Keys::RIGHT);
     }
+    
     if (controls_released(PSP_CTRL_UP) || controls_released(PSP_CTRL_RTRIGGER)) canvas->publicKeyReleased(Canvas::Keys::UP);
     if (controls_released(PSP_CTRL_DOWN) || controls_released(PSP_CTRL_LTRIGGER)) canvas->publicKeyReleased(Canvas::Keys::DOWN);
 }
