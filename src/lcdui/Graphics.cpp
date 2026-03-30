@@ -270,7 +270,6 @@ void Graphics::drawImage(Image* const image, int x, int y, int anchor)
     g2dBeginRects(image->getImage());
     g2dSetTexLinear(false);
     g2dSetCoordXY(x, y);
-    g2dSetColor(this->currentColor);
     g2dAdd();
     g2dEnd();
 }
