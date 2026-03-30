@@ -97,8 +97,7 @@ target_link_libraries(GravityDefied
 # Copy assets to the build directory
 file(COPY assets/levels.mrg DESTINATION ${CMAKE_BINARY_DIR})
 
-create_pbp_file(TARGET GravityDefied TITLE "Gravity Defied"
-  # ICON_PATH
-  # BACKGROUND_PATH
-  # PREVIEW_PATH
+create_pbp_file(TARGET GravityDefied 
+  TITLE "Gravity Defied"
+  ICON_PATH "../pspres/icon.png"
 )
