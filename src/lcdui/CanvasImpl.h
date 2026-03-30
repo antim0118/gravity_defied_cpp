@@ -9,7 +9,9 @@ class Canvas;
 
 class CanvasImpl {
 private:
-    Canvas* canvas;
+    Canvas *canvas;
+    bool AnalogLeft = false;
+    bool AnalogRight = false;
 
     const int width = 480;
     const int height = 272;
