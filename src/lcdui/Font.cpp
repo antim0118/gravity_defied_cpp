@@ -6,27 +6,17 @@ CMRC_DECLARE(assets);
 
 Font::Font(FontStyle style, FontSize pointSize)
 {
-    if (!ttfRwOps) {
-        cmrc::embedded_filesystem internalFs = cmrc::assets::get_filesystem();
-        cmrc::file fileData = internalFs.open("FontSansSerif.ttf");
-        SDL_RWops* raw = SDL_RWFromConstMem(fileData.begin(), fileData.size());
-        if (!raw) {
-            throw std::runtime_error(SDL_GetError());
-        }
-
-        ttfRwOps = raw;
-    }
-
     int realSize = getRealFontSize(pointSize);
-    TTF_Font* font = TTF_OpenFontRW(ttfRwOps, SDL_TRUE, realSize);
-    TTF_SetFontStyle(font, style);
-    this->ttfFont = font;
+    this->ttfFont = intraFontLoadTTF("FontSansSerif.ttf", INTRAFONT_STRING_UTF8, realSize);
+    if (!this->ttfFont || this->ttfFont == NULL)
+        printf("[ERR] error loading font \"FontSansSerif.ttf\" pointSize:%d  realSize:%d \n", pointSize, realSize);
+    // TTF_SetFontStyle(font, style);
     this->height = realSize;
 }
 
 Font::~Font()
 {
-    TTF_CloseFont(ttfFont);
+    intraFontUnload(ttfFont);
 }
 
 int Font::getBaselinePosition() const
@@ -39,7 +29,7 @@ int Font::getHeight() const
     return height;
 }
 
-TTF_Font* Font::getTtfFont() const
+intraFont* Font::getTtfFont() const
 {
     return ttfFont;
 }
@@ -51,10 +41,7 @@ int Font::charWidth(char c)
 
 int Font::stringWidth(const std::string& s)
 {
-    int width, height;
-    if (TTF_SizeText(ttfFont, s.c_str(), &width, &height) == -1)
-        throw std::runtime_error(TTF_GetError());
-    return width;
+    return intraFontMeasureText(ttfFont, s.c_str());
 }
 
 int Font::substringWidth(const std::string& string, int offset, int len)
@@ -66,7 +53,7 @@ int Font::getRealFontSize(FontSize size)
 {
     switch (size) {
     case SIZE_LARGE:
-        return 32;
+        return 30;
     case SIZE_MEDIUM:
         return 16;
     case SIZE_SMALL:

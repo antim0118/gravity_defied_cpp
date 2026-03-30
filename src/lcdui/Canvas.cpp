@@ -11,7 +11,7 @@
 Canvas::Canvas()
 {
     impl = std::make_unique<CanvasImpl>(this);
-    graphics = std::make_unique<Graphics>(impl->getRenderer());
+    graphics = std::make_unique<Graphics>();
 }
 
 Canvas::~Canvas()

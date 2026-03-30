@@ -1,8 +1,5 @@
 #include "CanvasImpl.h"
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
 #include <stdexcept>
 #include <iostream>
 
@@ -12,52 +9,23 @@ CanvasImpl::CanvasImpl(Canvas* canvas)
 {
     this->canvas = canvas;
 
-    if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-        throw std::runtime_error(SDL_GetError());
-    }
+    controls_init();
+    intraFontInit();
+    g2dInit();
 
-    if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
-        throw std::runtime_error(IMG_GetError());
-    }
-
-    if (TTF_Init() == -1) {
-        throw std::runtime_error(TTF_GetError());
-    }
-
-    window = SDL_CreateWindow(
-        0,
-        SDL_WINDOWPOS_UNDEFINED,
-        SDL_WINDOWPOS_UNDEFINED,
-        width, height,
-        SDL_WINDOW_SHOWN);
-
-    if (!window) {
-        throw std::runtime_error(SDL_GetError());
-    }
-
-    renderer = SDL_CreateRenderer(
-        window, -1, SDL_RENDERER_ACCELERATED);
-
-    if (!renderer) {
-        throw std::runtime_error(SDL_GetError());
-    }
-
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_RenderClear(renderer);
+    g2dClear(G2D_RGBA(255, 255, 255, 255));
 }
 
 CanvasImpl::~CanvasImpl()
 {
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
-    IMG_Quit();
-    TTF_Quit();
+    g2dTerm();
+    intraFontShutdown();
 }
 
 void CanvasImpl::repaint()
 {
-    SDL_RenderPresent(renderer);
+    g2dFlip(G2D_VSYNC);
+    g2dClear(G2D_RGBA(255, 255, 255, 255));
 }
 
 int CanvasImpl::getWidth()
@@ -70,66 +38,32 @@ int CanvasImpl::getHeight()
     return height;
 }
 
-SDL_Renderer* CanvasImpl::getRenderer()
-{
-    return renderer;
-}
-
 void CanvasImpl::processEvents()
 {
-    SDL_Event e;
+    controls_read();
 
-    while (SDL_PollEvent(&e) != 0) {
-        switch (e.type) {
-        case SDL_QUIT:
-            exit(0); // IMPROVE This is a super dumb way to finish the game, but it works
-            break;
-        case SDL_KEYDOWN: {
-            int keyCode = convertKeyCharToKeyCode(e.key.keysym.sym);
-            // std::cout << "Key pressed: " << keyCode << std::endl;
-            if (keyCode != 0) {
-                canvas->publicKeyPressed(keyCode);
-            }
-        } break;
-        case SDL_KEYUP: {
-            int sdlCode = e.key.keysym.sym;
-            int keyCode = convertKeyCharToKeyCode(sdlCode);
-            // std::cout << "Key released: " << keyCode << std::endl;
-            if (keyCode != 0) {
-                canvas->publicKeyReleased(keyCode);
-            } else {
-                if (sdlCode == SDLK_ESCAPE) {
-                    // std::cout << "ESC released" << std::endl;
-                    canvas->pressedEsc();
-                }
-            }
-        } break;
-        default:
-            break;
-        }
-    }
-}
+    if (controls_pressed(PSP_CTRL_START))// if (controls_released(PSP_CTRL_START))
+        canvas->pressedEsc();
 
-int CanvasImpl::convertKeyCharToKeyCode(SDL_Keycode keyCode)
-{
-    switch (keyCode) {
-    case SDLK_RETURN:
-        return Canvas::Keys::FIRE;
-    case SDLK_LEFT:
-        return Canvas::Keys::LEFT;
-    case SDLK_RIGHT:
-        return Canvas::Keys::RIGHT;
-    case SDLK_UP:
-        return Canvas::Keys::UP;
-    case SDLK_DOWN:
-        return Canvas::Keys::DOWN;
-    default:
-        std::cout << "unknown keyEvent: " << keyCode << std::endl;
-        return 0;
-    }
+    /* PRESSED */
+    if (controls_pressed(PSP_CTRL_CROSS))
+        canvas->publicKeyPressed(Canvas::Keys::FIRE);
+    
+    if (controls_pressed(PSP_CTRL_LEFT)) canvas->publicKeyPressed(Canvas::Keys::LEFT);
+    if (controls_pressed(PSP_CTRL_RIGHT)) canvas->publicKeyPressed(Canvas::Keys::RIGHT);
+    if (controls_pressed(PSP_CTRL_UP)) canvas->publicKeyPressed(Canvas::Keys::UP);
+    if (controls_pressed(PSP_CTRL_DOWN)) canvas->publicKeyPressed(Canvas::Keys::DOWN);
+
+    /* RELEASED */
+    if (controls_released(PSP_CTRL_CROSS))
+        canvas->publicKeyReleased(Canvas::Keys::FIRE);
+
+    if (controls_released(PSP_CTRL_LEFT)) canvas->publicKeyReleased(Canvas::Keys::LEFT);
+    if (controls_released(PSP_CTRL_RIGHT)) canvas->publicKeyReleased(Canvas::Keys::RIGHT);
+    if (controls_released(PSP_CTRL_UP)) canvas->publicKeyReleased(Canvas::Keys::UP);
+    if (controls_released(PSP_CTRL_DOWN)) canvas->publicKeyReleased(Canvas::Keys::DOWN);
 }
 
 void CanvasImpl::setWindowTitle(const std::string& title)
 {
-    SDL_SetWindowTitle(window, title.c_str());
 }

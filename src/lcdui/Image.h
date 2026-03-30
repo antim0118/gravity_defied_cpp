@@ -1,18 +1,21 @@
 #pragma once
 
 #include <string>
-#include <SDL2/SDL.h>
+#include <cstring>
 
-class Image {
+#include "../psp/glib2d.h"
+
+class Image
+{
 private:
-    SDL_Surface* surface;
+    g2dImage *img;
 
 public:
-    Image(const std::string& embeddedPath);
+    Image(const std::string &embeddedPath);
     Image(int width, int height);
     ~Image();
 
     int getWidth() const;
     int getHeight() const;
-    SDL_Surface* getSurface() const;
+    g2dImage *getImage() const;
 };

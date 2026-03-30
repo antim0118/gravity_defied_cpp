@@ -7,12 +7,8 @@
 #include <numeric>
 #include <cstring>
 
-#ifdef WIN32
-#include <libgen.h>
-#else
 #include <unistd.h>
 #include <pwd.h>
-#endif
 
 #include "RecordStoreException.h"
 #include "../utils/FileStream.h"
@@ -124,10 +120,6 @@ void RecordStore::log(std::string s)
 
 void RecordStore::setRecordStoreDir([[maybe_unused]] const char* progName)
 {
-#ifdef WIN32
-    const char* base = dirname(strdup(progName));
-    recordStoreDir = std::filesystem::path(base) / "recordStore";
-#else
     const char* homeDir = getenv("HOME");
     if (!homeDir)
         homeDir = getpwuid(getuid())->pw_dir;
@@ -135,6 +127,5 @@ void RecordStore::setRecordStoreDir([[maybe_unused]] const char* progName)
     if (!homeDir)
         throw std::system_error(errno, std::system_category(), "Error getting home directory");
 
-    recordStoreDir = std::filesystem::path(homeDir) / ".GravityDefied";
-#endif
+    recordStoreDir = std::filesystem::path(homeDir) / "saves";
 }

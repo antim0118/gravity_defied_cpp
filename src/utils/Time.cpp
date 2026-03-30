@@ -1,6 +1,6 @@
 #include "time.h"
 
-#include <SDL2/SDL.h>
+#include <pspthreadman.h>
 #include <chrono>
 
 namespace Time {
@@ -12,6 +12,6 @@ int64_t currentTimeMillis()
 
 void sleep(int64_t ms)
 {
-    SDL_Delay(ms);
+    sceKernelDelayThreadCB(ms * 1000);
 }
 }

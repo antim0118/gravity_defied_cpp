@@ -1,39 +1,29 @@
 #include "Graphics.h"
 #include <memory>
 
-Graphics::Graphics(SDL_Renderer* renderer)
+Graphics::Graphics()
 {
-    this->renderer = renderer;
-    this->currentColor = { 0, 0, 0, 255 };
+    this->currentColor = G2D_RGBA(0, 0, 0, 255);
     this->font = nullptr;
 }
 
 void Graphics::drawString(const std::string& s, int x, int y, int anchor)
 {
-    SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font->getTtfFont(), s.c_str(), currentColor);
-    SDL_Texture* message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+    intraFontSetStyle(font->getTtfFont(), 1.0f, this->currentColor, 0, 0.0f, 0);
+    intraFontActivate(font->getTtfFont(), false);
 
-    int width, height;
-    if (TTF_SizeText(font->getTtfFont(), s.c_str(), &width, &height) == -1)
-        throw std::runtime_error(TTF_GetError());
+    int width = intraFontMeasureText(font->getTtfFont(), s.c_str());
+    int height = intraFontTextHeight(font->getTtfFont());
 
     x = getAnchorX(x, width, anchor);
     y = getAnchorY(y, height, anchor);
-    SDL_Rect dstRect { x, y, width, height };
 
-    SDL_RenderCopy(renderer, message, nullptr, &dstRect);
-
-    SDL_FreeSurface(surfaceMessage);
-    SDL_DestroyTexture(message);
+    intraFontPrint(font->getTtfFont(), x, y + intraFontTextHeight(font->getTtfFont()), s.c_str());
 }
 
 void Graphics::setColor(int r, int g, int b)
 {
-    currentColor.r = r;
-    currentColor.g = g;
-    currentColor.b = b;
-    currentColor.a = 255;
-    SDL_SetRenderDrawColor(renderer, (Uint8)r, (Uint8)g, (Uint8)b, 255);
+    currentColor = G2D_RGBA(r, g, b, 255);
 }
 
 void Graphics::setFont(std::shared_ptr<Font> font)
@@ -48,8 +38,7 @@ std::shared_ptr<Font> Graphics::getFont() const
 
 void Graphics::setClip(int x, int y, int w, int h)
 {
-    SDL_Rect clipRect { x, y, w, h };
-    SDL_RenderSetClipRect(renderer, &clipRect);
+    g2dSetScissor(x, y, w, h);
 }
 
 void Graphics::drawChar(char c, int x, int y, int anchor)
@@ -59,8 +48,12 @@ void Graphics::drawChar(char c, int x, int y, int anchor)
 
 void Graphics::fillRect(int x, int y, int w, int h)
 {
-    SDL_Rect rect { x, y, w, h };
-    SDL_RenderFillRect(renderer, &rect);
+    g2dBeginRects(NULL);
+    g2dSetCoordXY(x, y);
+    g2dSetScaleWH(w, h);
+    g2dSetColor(this->currentColor);
+    g2dAdd();
+    g2dEnd();
 }
 
 /**
@@ -225,22 +218,31 @@ void Graphics::fillArc(int x, int y, int w, int h, int startAngle, int arcAngle)
 
 void Graphics::_putpixel(int x, int y)
 {
-    SDL_RenderDrawPoint(renderer, x, y);
+    fillRect(x, y, 1, 1);
 }
 
 void Graphics::drawLine(int x1, int y1, int x2, int y2)
 {
-    SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
+    g2dBeginLines(G2D_STRIP);
+    g2dSetColor(this->currentColor);
+    g2dSetCoordXY(x1, y1);
+    g2dAdd();
+    g2dSetCoordXY(x2, y2);
+    g2dAdd();
+    g2dEnd();
 }
 
 void Graphics::drawImage(Image* const image, int x, int y, int anchor)
 {
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image->getSurface());
     x = getAnchorX(x, image->getWidth(), anchor);
     y = getAnchorY(y, image->getHeight(), anchor);
-    SDL_Rect dstRect { x, y, image->getWidth(), image->getHeight() };
-    SDL_RenderCopy(renderer, texture, 0, &dstRect);
-    SDL_DestroyTexture(texture);
+
+    g2dBeginRects(image->getImage());
+    g2dSetTexLinear(false);
+    g2dSetCoordXY(x, y);
+    g2dSetColor(this->currentColor);
+    g2dAdd();
+    g2dEnd();
 }
 
 int Graphics::getAnchorX(int x, int size, int anchor)

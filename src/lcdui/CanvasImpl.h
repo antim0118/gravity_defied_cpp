@@ -1,10 +1,9 @@
 #pragma once
 
 #include <memory>
-
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
+#include "../psp/ctrl/controls.h"
+#include "../psp/intra/intraFont.h"
+#include "../psp/glib2d.h"
 
 class Canvas;
 
@@ -12,13 +11,8 @@ class CanvasImpl {
 private:
     Canvas* canvas;
 
-    SDL_Window* window;
-    SDL_Renderer* renderer;
-
-    const int width = 640;
-    const int height = 480;
-
-    static int convertKeyCharToKeyCode(SDL_Keycode keyCode);
+    const int width = 480;
+    const int height = 272;
 
 public:
     CanvasImpl(Canvas* canvas);
@@ -28,7 +22,6 @@ public:
     int getWidth();
     int getHeight();
 
-    SDL_Renderer* getRenderer();
     void processEvents();
     void setWindowTitle(const std::string& title);
 };
