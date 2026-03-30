@@ -109,6 +109,36 @@ void Graphics::drawArc(int x, int y, int width, int heigth, int startAngle, int 
     }
 }
 
+void Graphics::drawCircle(int cx, int cy, int radius)
+{
+    int x = 0;
+    int y = radius;
+    int d = 3 - 2 * radius;
+
+    g2dBeginRects(NULL);
+    g2dSetColor(this->currentColor);
+    g2dSetScaleWH(1, 1);
+    while (x <= y) {
+        g2dSetCoordXY(cx + x, cy + y); g2dAdd();
+        g2dSetCoordXY(cx - x, cy + y); g2dAdd();
+        g2dSetCoordXY(cx + x, cy - y); g2dAdd();
+        g2dSetCoordXY(cx - x, cy - y); g2dAdd();
+        g2dSetCoordXY(cx + y, cy + x); g2dAdd();
+        g2dSetCoordXY(cx - y, cy + x); g2dAdd();
+        g2dSetCoordXY(cx + y, cy - x); g2dAdd();
+        g2dSetCoordXY(cx - y, cy - x); g2dAdd();
+
+        if (d < 0)
+            d = d + 4 * x + 6;
+        else {
+            d = d + 4 * (x - y) + 10;
+            y--;
+        }
+        x++;
+    }
+    g2dEnd();
+}
+
 // void Graphics::fillArc(int x, int y, int w, int h, int startAngle, int arcAngle) {
 //     // NOTE this impl assumes startAngle < arcAngle
 //     int  _x, _y,      // circle centered point

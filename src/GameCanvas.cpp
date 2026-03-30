@@ -193,7 +193,7 @@ void GameCanvas::drawCircle(int x, int y, int size)
     int radius = size / 2;
     int localX = addDx(x - radius);
     int localY = addDy(y + radius);
-    graphics->drawArc(localX, localY, size, size, 0, 360);
+    graphics->drawCircle(addDx(x), addDy(y), radius);
 }
 
 void GameCanvas::fillRect(int x, int y, int w, int h)
