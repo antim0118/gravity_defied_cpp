@@ -191,8 +191,6 @@ void GameCanvas::method_142(int var1, int var2, int var3, int var4)
 void GameCanvas::drawCircle(int x, int y, int size)
 {
     int radius = size / 2;
-    int localX = addDx(x - radius);
-    int localY = addDy(y + radius);
     graphics->drawCircle(addDx(x), addDy(y), radius);
 }
 
