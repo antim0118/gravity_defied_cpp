@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <pspkernel.h>
+#include <psppower.h>
 #include <unistd.h>
 
 #include "Micro.h"
@@ -40,6 +41,10 @@ int SetupCallbacks(void) {
 int main(int argc, char **argv) {
     SetupCallbacks();
     chdir("assets");
+
+    if (scePowerGetCpuClockFrequency() != 333)
+        scePowerSetClockFrequency(333, 333, 166);
+
     try {
         std::unique_ptr<Micro> micro = std::make_unique<Micro>();
         micro->startApp(argc, argv);
