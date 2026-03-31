@@ -74,14 +74,14 @@ void RecordEnumerationImpl::serialize(FileStream* outStream)
 
 void RecordEnumerationImpl::deserialize(FileStream* inStream)
 {
-    size_t temp;
+    size_t dataNum;
     inStream->readVariable(&currentPos);
-    inStream->readVariable(&temp);
-    data.resize(temp);
+    inStream->readVariable(&dataNum);
+    data.resize(dataNum);
 
     for (size_t i = 0; i < data.size(); ++i) {
-        inStream->readVariable(&temp);
-        data[i].resize(temp);
+        inStream->readVariable(&dataNum);
+        data[i].resize(dataNum);
         for (size_t j = 0; j < data[i].size(); ++j) {
             inStream->readVariable(&data[i][j]);
         }
