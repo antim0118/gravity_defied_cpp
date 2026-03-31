@@ -32,8 +32,11 @@ LevelLoader::LevelLoader(const std::filesystem::path& mrgFilePath)
         }
         levelFileStream = fileStream;
     } else {
-        EmbedFileStream* embedFileStream = new EmbedFileStream("levels.mrg");
-        levelFileStream = static_cast<FileStream*>(embedFileStream);
+        FileStream* fileStream = new FileStream("levels.mrg", std::ios::in | std::ios::binary);
+        if (!fileStream->isOpen()) {
+            throw std::system_error(errno, std::system_category(), "Failed to open " + mrgFilePath.string());
+        }
+        levelFileStream = fileStream;
     }
 
     loadLevels();
