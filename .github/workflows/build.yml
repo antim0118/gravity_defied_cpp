@@ -33,7 +33,7 @@ jobs:
         echo "$HOME/pspdev/bin" >> $GITHUB_PATH
 
     - name: Create CMAKE files
-      run: mkdir build && cd build && psp-cmake ..
+      run: mkdir build && cd build && psp-cmake .. 
 
     - name: Run make
       run: make clean && make
