@@ -51,7 +51,6 @@ cmrc_add_resource_library(Assets
     assets/bluebody.png
     assets/logo.png
     assets/fender.png
-    assets/levels.mrg
     assets/engine.png
     assets/splash.png
     assets/raster.png
@@ -61,8 +60,7 @@ cmrc_add_resource_library(Assets
 add_executable(GravityDefied ${SOURCES})
 
 target_compile_features(GravityDefied PRIVATE cxx_std_17)
-# target_compile_options(GravityDefied PRIVATE -Wall -Wextra)
-target_compile_options(GravityDefied PRIVATE -O3 -G0 -Wall -Wno-trigraphs -Ofast -funroll-loops -fomit-frame-pointer -DNDEBUG -ffunction-sections -fdata-sections)
+target_compile_options(GravityDefied PRIVATE -Wall -Wextra)
 
 target_include_directories(GravityDefied PRIVATE include)
 
@@ -93,9 +91,6 @@ target_link_libraries(GravityDefied
                         pspvram
                         bz2
                         freetype)
-
-# Copy assets to the build directory
-file(COPY assets/levels.mrg DESTINATION ${CMAKE_BINARY_DIR})
 
 create_pbp_file(TARGET GravityDefied 
   TITLE "Gravity Defied"
