@@ -9,6 +9,13 @@ Graphics::Graphics()
 
 void Graphics::drawString(const std::string& s, int x, int y, int anchor)
 {
+    if (!font || font->getTtfFont() == NULL)
+    {
+        char buffer[256];
+        sprintf(buffer, "Graphics::drawString(\"%s\") -- font is null", s.c_str());
+        throw std::runtime_error(buffer);
+    }
+    
     intraFontSetStyle(font->getTtfFont(), 1.0f, this->currentColor, 0, 0.0f, 0);
     intraFontActivate(font->getTtfFont(), false);
 
