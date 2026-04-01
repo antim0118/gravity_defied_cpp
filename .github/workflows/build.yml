@@ -36,7 +36,7 @@ jobs:
       run: mkdir build && cd build && psp-cmake .. 
 
     - name: Run make
-      run: make clean && make
+      run: cd build && make clean && make
 
     - name: Upload build artifact
       if: success()
@@ -44,5 +44,5 @@ jobs:
       with:
         name: gd-psp
         path: |
-          ../assets
-          EBOOT.PBP
+          assets/
+          build/EBOOT.PBP
