@@ -4,10 +4,8 @@
 #include <iostream>
 
 #include "Micro.h"
-#include "psp/glib2d.h"
-#include "psp/intra/intraFont.h"
 
-#include "psp/pspSetup.c"
+#include "psp/pspSetup.cpp"
 
 int main(int argc, char **argv) {
     InitGame();
@@ -17,7 +15,7 @@ int main(int argc, char **argv) {
         micro->startApp(argc, argv);
     }
     catch (std::exception &e) {
-        std::cerr << "Exception: " << e.what() << std::endl;
+        ShowError(e.what());
         return EXIT_FAILURE;
     }
 
