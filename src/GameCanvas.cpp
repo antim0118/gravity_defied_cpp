@@ -458,9 +458,9 @@ void GameCanvas::paintProgressBar(int progress, bool mode)
     graphics->fillRect(2, h - 3, (int)((int64_t)((width - 4) << 16) * (int64_t)progress >> 16) >> 16, 1);
 }
 
-void GameCanvas::method_163(int var1)
+void GameCanvas::setKeyset(int keyset)
 {
-    field_232 = var1;
+    currentKeyset = keyset;
 }
 
 void GameCanvas::paint(Graphics* graphics)
@@ -497,26 +497,24 @@ void GameCanvas::method_164()
 
 void GameCanvas::handleUpdatedInput()
 {
-    int var1 = 0;
-    int var2 = 0;
-    int var3 = field_232;
+    int vert = 0;
+    int hor = 0;
 
-    int var4;
-    for (var4 = 0; var4 < 10; ++var4) {
-        if (activeKeys[var4]) {
-            var1 += field_231[var3][var4][0];
-            var2 += field_231[var3][var4][1];
+    for (int key = 0; key < 10; ++key) {
+        if (activeKeys[key]) {
+            vert += keysets[currentKeyset][key][0];
+            hor += keysets[currentKeyset][key][1];
+        }
+    }
+    
+    for (int action = 0; action < 7; ++action) {
+        if (activeActions[action]) {
+            vert += actionsets[action][0];
+            hor += actionsets[action][1];
         }
     }
 
-    for (var4 = 0; var4 < 7; ++var4) {
-        if (activeActions[var4]) {
-            var1 += field_230[var4][0];
-            var2 += field_230[var4][1];
-        }
-    }
-
-    gamePhysics->method_30(var1, var2);
+    gamePhysics->updateInputs(vert, hor);
 }
 
 void GameCanvas::processTimers()

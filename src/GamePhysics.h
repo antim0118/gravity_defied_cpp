@@ -109,7 +109,7 @@ public:
     void method_26(bool var1);
     void setRenderMinMaxX(int minX, int maxX);
     void processPointerReleased();
-    void method_30(int var1, int var2);
+    void updateInputs(int vert, int hor);
     void enableGenerateInputAI();
     void disableGenerateInputAI();
     int updatePhysics();

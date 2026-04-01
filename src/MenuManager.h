@@ -113,7 +113,7 @@ private:
     int8_t isDisabledShadows = 0;
     int8_t isDisabledDriverSprite = 0;
     int8_t isDisabledBikeSprite = 0;
-    int8_t field_367 = 0;
+    int8_t keyset = 0;
     int8_t isDisableLookAhead = 0;
     int8_t field_369 = 0;
     int8_t field_370 = 0;

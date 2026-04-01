@@ -276,22 +276,22 @@ void GamePhysics::processPointerReleased()
     isInputUp = isInputDown = isInputRight = isInputLeft = false;
 }
 
-void GamePhysics::method_30(int var1, int var2)
+void GamePhysics::updateInputs(int vert, int hor)
 {
     if (!isGenerateInputAI) {
         isInputUp = isInputDown = isInputRight = isInputLeft = false;
-        if (var1 > 0) {
+        if (vert > 0) {
             isInputUp = true;
-        } else if (var1 < 0) {
+        } else if (vert < 0) {
             isInputDown = true;
         }
 
-        if (var2 > 0) {
+        if (hor > 0) {
             isInputRight = true;
             return;
         }
 
-        if (var2 < 0) {
+        if (hor < 0) {
             isInputLeft = true;
         }
     }

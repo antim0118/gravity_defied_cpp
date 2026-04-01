@@ -102,7 +102,7 @@ void MenuManager::loadingInitPart(int var1)
         isDisabledShadows = getSettingOrDefault(1, isDisabledShadows);
         isDisabledDriverSprite = getSettingOrDefault(2, isDisabledDriverSprite);
         isDisabledBikeSprite = getSettingOrDefault(3, isDisabledBikeSprite);
-        field_367 = getSettingOrDefault(14, field_367);
+        keyset = getSettingOrDefault(14, keyset);
         isDisableLookAhead = getSettingOrDefault(4, isDisableLookAhead);
         field_369 = getSettingOrDefault(11, field_369);
         field_370 = getSettingOrDefault(10, field_370);
@@ -131,7 +131,7 @@ void MenuManager::loadingInitPart(int var1)
         LevelLoader::isEnabledPerspective = isDisablePerspective == 0;
         LevelLoader::isEnabledShadows = isDisabledShadows == 0;
         micro->gamePhysics->setEnableLookAhead(isDisableLookAhead == 0);
-        micro->gameCanvas->method_163(field_367);
+        micro->gameCanvas->setKeyset(keyset);
         micro->gameCanvas->method_124(field_372 == 0);
         leagueNamesAll4 = { "100cc", "175cc", "220cc", "325cc" };
         levelNames = micro->levelLoader->levelNames;
@@ -207,7 +207,7 @@ void MenuManager::loadingInitPart(int var1)
         shadowsSetting = new SettingsStringRender("Shadows", isDisabledShadows, this, optionsOnOff, true, micro, gameMenuOptions, false);
         driverSpriteSetting = new SettingsStringRender("Driver sprite", isDisabledDriverSprite, this, optionsOnOff, true, micro, gameMenuOptions, false);
         bikeSpriteSetting = new SettingsStringRender("Bike sprite", isDisabledBikeSprite, this, optionsOnOff, true, micro, gameMenuOptions, false);
-        inputSetting = new SettingsStringRender("Input", field_367, this, optionsKeysets, false, micro, gameMenuOptions, false);
+        inputSetting = new SettingsStringRender("Input", keyset, this, optionsKeysets, false, micro, gameMenuOptions, false);
         lookAheadSetting = new SettingsStringRender("Look ahead", isDisableLookAhead, this, optionsOnOff, true, micro, gameMenuOptions, false);
         clearHighscoreSetting = new TimerOrMotoPartOrMenuElem("Clear highscore", gameMenuConfirmClear, this);
         return;
@@ -845,7 +845,7 @@ void MenuManager::processMenu(IGameMenuElement* menuElement)
                     inputSetting->setCurentOptionPos(inputSetting->getCurrentOptionPos() + 1);
                 }
 
-                micro->gameCanvas->method_163(inputSetting->getCurrentOptionPos());
+                micro->gameCanvas->setKeyset(inputSetting->getCurrentOptionPos());
                 return;
             }
 
