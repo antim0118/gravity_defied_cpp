@@ -190,7 +190,7 @@ void Micro::run()
             menuManager->method_211(var5);
         }
 
-        bool var10000;
+        bool isRunning;
         try {
             if (isInGameMenu) {
                 menuManager->runMenu(MENU_INGAME);
@@ -268,12 +268,12 @@ void Micro::run()
                 field_248 = var5 != 4;
             }
 
-            var10000 = gameIsRunning;
+            isRunning = gameIsRunning;
         } catch (std::exception& var15) {
             continue;
         }
 
-        if (!var10000) {
+        if (!isRunning) {
             break;
         }
 
