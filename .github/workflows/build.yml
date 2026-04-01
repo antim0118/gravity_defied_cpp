@@ -1,34 +1,48 @@
-name: Build
-on: [pull_request, push]
+name: Gravity Defied PSP
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install build-essential libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev g++-mingw-w64-i686
+    - name: Install PSPSDK dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y --no-install-recommends \
+        build-essential cmake pkgconf \
+        libreadline8 libusb-0.1 libgpgme11 \
+        libarchive-tools fakeroot wget
 
-      - name: Build for Ubuntu
-        run: |
-          cmake -B build-ubuntu
-          cmake --build build-ubuntu
+    - name: Download latest PSPSDK
+      run: |
+        wget https://github.com/pspdev/pspdev/releases/latest/download/pspdev-ubuntu-latest-x86_64.tar.gz
+        mkdir -p "$HOME/pspdev"
+        tar -xvf pspdev-ubuntu-latest-x86_64.tar.gz -C "$HOME/pspdev" --strip-components=1
 
-      - name: Upload for Ubuntu
-        uses: actions/upload-artifact@v4
-        with:
-          name: GravityDefied
-          path: build-ubuntu/GravityDefied
+    - name: Add PSPSDK to PATH
+      run: |
+        echo "PSPDEV=$HOME/pspdev" >> $GITHUB_ENV
+        echo "$HOME/pspdev/bin" >> $GITHUB_PATH
 
-      - name: Build for Windows
-        run: |
-          cmake -DCMAKE_TOOLCHAIN_FILE=cmake/mingw-toolchain.cmake -B build-win32
-          cmake --build build-win32
+    - name: Create CMAKE files
+      run: mkdir build && cd build && psp-cmake ..
 
-      - name: Upload for Windows
-        uses: actions/upload-artifact@v4
-        with:
-          name: GravityDefied.exe
-          path: build-win32/GravityDefied.exe
+    - name: Run make
+      run: make clean && make
+
+    - name: Upload build artifact
+      if: success()
+      uses: actions/upload-artifact@v4
+      with:
+        name: gd-psp
+        path: |
+          ../assets
+          EBOOT.PBP
