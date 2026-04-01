@@ -3,10 +3,6 @@
 #include <stdexcept>
 #include <string>
 
-#include <cmrc/cmrc.hpp>
-
-CMRC_DECLARE(assets);
-
 Image::Image(int width, int height)
 {
     this->img = g2dTexCreatePlaceholder(width, height);

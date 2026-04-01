@@ -8,7 +8,6 @@ find_package(PkgConfig REQUIRED)
 # Create a sources variable with a link to all cpp files to compile
 set(SOURCES
     src/utils/Time.cpp
-    src/utils/EmbedFileStream.cpp
     src/main.cpp
     src/MathF16.cpp
     src/GameCanvas.cpp
@@ -38,25 +37,6 @@ set(SOURCES
     src/psp/intra/intraFont.c
 )
 
-include(cmake/CMakeRC.cmake)
-
-cmrc_add_resource_library(Assets
-    NAMESPACE assets
-    ALIAS Assets::Assets
-    WHENCE assets
-    assets/bluearm.png
-    assets/helmet.png
-    assets/sprites.png
-    assets/blueleg.png
-    assets/bluebody.png
-    assets/logo.png
-    assets/fender.png
-    assets/engine.png
-    assets/splash.png
-    assets/raster.png
-    assets/FontSansSerif.ttf
-)
-
 add_executable(GravityDefied ${SOURCES})
 
 target_compile_features(GravityDefied PRIVATE cxx_std_17)
@@ -68,8 +48,7 @@ target_link_directories(GravityDefied PRIVATE)
 
 set_target_properties(GravityDefied PROPERTIES LINK_FLAGS_RELEASE -s)
 
-target_link_libraries(GravityDefied 
-                        Assets::Assets
+target_link_libraries(GravityDefied
                         png
                         jpeg
                         psppower

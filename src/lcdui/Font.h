@@ -2,7 +2,6 @@
 
 #include <string>
 
-#include <cmrc/cmrc.hpp>
 #include "../psp/intra/intraFont.h"
 
 class Font {

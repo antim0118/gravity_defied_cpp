@@ -2,8 +2,6 @@
 
 #include <stdexcept>
 
-CMRC_DECLARE(assets);
-
 Font::Font(FontStyle style, FontSize pointSize)
 {
     int realSize = getRealFontSize(pointSize);

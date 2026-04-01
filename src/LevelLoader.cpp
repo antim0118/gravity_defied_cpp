@@ -1,6 +1,5 @@
 #include "LevelLoader.h"
 #include "utils/FileStream.h"
-#include "utils/EmbedFileStream.h"
 
 #include <climits>
 #include <algorithm>
