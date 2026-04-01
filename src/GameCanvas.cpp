@@ -448,6 +448,9 @@ void GameCanvas::drawGame(Graphics* g)
 
 void GameCanvas::paintProgressBar(int progress, bool mode)
 {
+    if (progress < 0) progress = 0;
+    if (progress > 65535) progress = 65535;
+    
     int h = mode ? height : height2;
     setColor(0, 0, 0);
     graphics->fillRect(1, h - 4, width - 2, 3);
