@@ -85,10 +85,10 @@ private:
     SettingsStringRender* field_334;
     SettingsStringRender* field_335;
     SettingsStringRender* field_336;
-    int64_t field_337;
+    int64_t finishTime;
     int field_338;
     int field_339;
-    std::string field_340;
+    std::string finishTimeStr;
     char* playerName;
     char availableTracks[4];
     char defaultName[4] = "AAA";
@@ -120,16 +120,16 @@ private:
     int8_t field_371 = 0;
     int8_t field_372 = 0;
     int8_t field_373 = 0;
-    std::vector<std::string> field_374;
-    std::vector<std::string> field_375;
-    std::unique_ptr<TextRender> field_376;
+    std::vector<std::string> optionsOnOff;
+    std::vector<std::string> optionsKeysets;
+    std::unique_ptr<TextRender> optionsTextRender;
     // Alert alert = nullptr; // TODO
 
     void addTextRender(GameMenu* gameMenu, std::string text);
     void method_197();
     void drawRasterImage(Graphics* graphics);
     void processNonFireKeyCode(int keyCode);
-    std::vector<int8_t> method_216(int var1, int8_t var2);
+    std::vector<int8_t> method_216(int var1, int8_t defaultValue);
     int8_t getSettingOrDefault(int var1, int8_t var2);
     std::string timeToString(int64_t time);
     void setValue(int pos, int8_t value);
@@ -142,7 +142,7 @@ public:
     bool field_377 = false;
 
     MenuManager(Micro* var1);
-    void initPart(int var1);
+    void loadingInitPart(int var1);
     int getCurrentLevel();
     int getCurrentTrack();
     bool method_196();
@@ -164,7 +164,7 @@ public:
     int method_212();
     int method_213();
     int method_214();
-    void method_215(int64_t var1);
+    void setFinishTime(int64_t time);
     void removeOkAndBackCommands();
     void addOkAndBackCommands();
     /* synchronized */ void method_202(Graphics* var1);

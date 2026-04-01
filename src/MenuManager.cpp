@@ -12,25 +12,25 @@
 #include "utils/Time.h"
 
 
-MenuManager::MenuManager(Micro* var1)
+MenuManager::MenuManager(Micro* _micro)
 {
-    micro = var1;
-    field_376 = std::make_unique<TextRender>("", var1);
+    micro = _micro;
+    optionsTextRender = std::make_unique<TextRender>("", _micro);
 }
 
-void MenuManager::initPart(int var1)
+void MenuManager::loadingInitPart(int var1)
 {
     int var4;
     switch (var1) {
     case 1:
         playerName = defaultName;
-        field_374 = { "On", "Off" };
-        field_375 = { "Keyset 1", "Keyset 2", "Keyset 3" };
+        optionsOnOff = { "On", "Off" };
+        optionsKeysets = { "Keyset 1", "Keyset 2", "Keyset 3" };
         recordManager = new RecordManager();
-        field_337 = -1L;
+        finishTime = -1L;
         field_338 = -1;
         field_339 = -1;
-        field_340.clear();
+        finishTimeStr.clear();
         isRecordStoreOpened = false;
         savedData = std::vector<int8_t>(19);
 
@@ -203,12 +203,12 @@ void MenuManager::initPart(int var1)
         gameMenuPlay->addMenuElement(gameTimerTaskHighscore);
         gameMenuPlay->addMenuElement(settingStringGoToMain);
 
-        perspectiveSetting = new SettingsStringRender("Perspective", isDisablePerspective, this, field_374, true, micro, gameMenuOptions, false);
-        shadowsSetting = new SettingsStringRender("Shadows", isDisabledShadows, this, field_374, true, micro, gameMenuOptions, false);
-        driverSpriteSetting = new SettingsStringRender("Driver sprite", isDisabledDriverSprite, this, field_374, true, micro, gameMenuOptions, false);
-        bikeSpriteSetting = new SettingsStringRender("Bike sprite", isDisabledBikeSprite, this, field_374, true, micro, gameMenuOptions, false);
-        inputSetting = new SettingsStringRender("Input", field_367, this, field_375, false, micro, gameMenuOptions, false);
-        lookAheadSetting = new SettingsStringRender("Look ahead", isDisableLookAhead, this, field_374, true, micro, gameMenuOptions, false);
+        perspectiveSetting = new SettingsStringRender("Perspective", isDisablePerspective, this, optionsOnOff, true, micro, gameMenuOptions, false);
+        shadowsSetting = new SettingsStringRender("Shadows", isDisabledShadows, this, optionsOnOff, true, micro, gameMenuOptions, false);
+        driverSpriteSetting = new SettingsStringRender("Driver sprite", isDisabledDriverSprite, this, optionsOnOff, true, micro, gameMenuOptions, false);
+        bikeSpriteSetting = new SettingsStringRender("Bike sprite", isDisabledBikeSprite, this, optionsOnOff, true, micro, gameMenuOptions, false);
+        inputSetting = new SettingsStringRender("Input", field_367, this, optionsKeysets, false, micro, gameMenuOptions, false);
+        lookAheadSetting = new SettingsStringRender("Look ahead", isDisableLookAhead, this, optionsOnOff, true, micro, gameMenuOptions, false);
         clearHighscoreSetting = new TimerOrMotoPartOrMenuElem("Clear highscore", gameMenuConfirmClear, this);
         return;
     case 6:
@@ -239,13 +239,13 @@ void MenuManager::initPart(int var1)
         gameMenuHelp->addMenuElement(field_318);
         field_319 = new GameMenu("Keys", micro, gameMenuHelp);
         field_320 = new TimerOrMotoPartOrMenuElem("Keys", field_319, this);
-        addTextRender(field_319, "- " + field_375[0] + " -");
+        addTextRender(field_319, "- " + optionsKeysets[0] + " -");
         addTextRender(field_319, "UP accelerates, DOWN brakes, RIGHT leans forward and LEFT leans backward. 1 accelerates and leans backward. 3 accelerates and leans forward. 7 brakes and leans backward. 9 brakes and leans forward.");
-        field_319->addMenuElement(field_376.get());
-        addTextRender(field_319, "- " + field_375[1] + " -");
+        field_319->addMenuElement(optionsTextRender.get());
+        addTextRender(field_319, "- " + optionsKeysets[1] + " -");
         addTextRender(field_319, "1 accelerates, 4 brakes, 6 leans forward and 5 leans backward.");
-        field_319->addMenuElement(field_376.get());
-        addTextRender(field_319, "- " + field_375[2] + " -");
+        field_319->addMenuElement(optionsTextRender.get());
+        addTextRender(field_319, "- " + optionsKeysets[2] + " -");
         addTextRender(field_319, "3 accelerates, 6 brakes, 5 leans forward and 4 leans backward.");
         field_319->addMenuElement(settingStringBack);
         gameMenuHelp->addMenuElement(field_320);
@@ -266,25 +266,25 @@ void MenuManager::initPart(int var1)
 
         addTextRender(gameMenuOptions2, "Perspective: On/Off");
         addTextRender(gameMenuOptions2, "Default: <On>. Turns on and off the perspective view of the tracks.");
-        gameMenuOptions2->addMenuElement(field_376.get());
+        gameMenuOptions2->addMenuElement(optionsTextRender.get());
         addTextRender(gameMenuOptions2, "Shadows: On/Off");
         addTextRender(gameMenuOptions2, "Default: <On>. Turns on and off the shadows.");
-        gameMenuOptions2->addMenuElement(field_376.get());
+        gameMenuOptions2->addMenuElement(optionsTextRender.get());
         addTextRender(gameMenuOptions2, "Driver Sprite: On / Off");
         addTextRender(gameMenuOptions2, "Default: <On>. <On> uses a texture for the driver. <Off> uses line graphics.");
-        gameMenuOptions2->addMenuElement(field_376.get());
+        gameMenuOptions2->addMenuElement(optionsTextRender.get());
         addTextRender(gameMenuOptions2, "Bike Sprite: On / Off");
         addTextRender(gameMenuOptions2, "Default: <On>. <On> uses a texture for the bike. <Off> uses line graphics.");
-        gameMenuOptions2->addMenuElement(field_376.get());
+        gameMenuOptions2->addMenuElement(optionsTextRender.get());
         addTextRender(gameMenuOptions2, "Input: Keyset 1,2,3 ");
         addTextRender(gameMenuOptions2, "Default: <1>. Determines which type of input should be used when playing. See \"Keys\" in the help menu for more info.");
-        gameMenuOptions2->addMenuElement(field_376.get());
+        gameMenuOptions2->addMenuElement(optionsTextRender.get());
         addTextRender(gameMenuOptions2, "Look ahead: On/Off");
         addTextRender(gameMenuOptions2, "Default: <On>. Turns on and off smart camera movement.");
-        gameMenuOptions2->addMenuElement(field_376.get());
+        gameMenuOptions2->addMenuElement(optionsTextRender.get());
         addTextRender(gameMenuOptions2, "Clear highscore");
         addTextRender(gameMenuOptions2, "Lets you clear the highscores. Here you can also do a \"Full Reset\" which will reset the game to original state (clear settings, highscores, unlocked levels and leagues).");
-        gameMenuOptions2->addMenuElement(field_376.get());
+        gameMenuOptions2->addMenuElement(optionsTextRender.get());
         gameMenuOptions2->addMenuElement(settingStringBack);
         gameMenuHelp->addMenuElement(field_326);
         gameMenuHelp->addMenuElement(settingStringBack);
@@ -343,11 +343,11 @@ bool MenuManager::method_196()
 
 void MenuManager::method_197()
 {
-    recordManager->method_17(settingsStringLeague->getCurrentOptionPos(), playerName, field_337);
+    recordManager->method_17(settingsStringLeague->getCurrentOptionPos(), playerName, finishTime);
     recordManager->writeRecordInfo();
     field_356 = false;
     gameMenuFinished->clearVector();
-    gameMenuFinished->addMenuElement(new TextRender("Time: " + field_340, micro));
+    gameMenuFinished->addMenuElement(new TextRender("Time: " + finishTimeStr, micro));
     std::vector<std::string> var1 = recordManager->getRecordDescription(settingsStringLeague->getCurrentOptionPos());
 
     for (std::size_t var2 = 0; var2 < var1.size(); ++var2) {
@@ -413,15 +413,15 @@ void MenuManager::method_197()
 
             showAlert("League unlocked", "You have successfully unlocked a new league: " + leagueNames[availableLeagues], nullptr);
         } else {
-            bool var4 = true;
+            bool hasAvailableTracks = true;
 
             for (int var5 = 0; var5 < 3; ++var5) {
                 if (availableTracks[var5] != static_cast<int>(micro->levelLoader->levelNames[var5].size() - 1)) {
-                    var4 = false;
+                    hasAvailableTracks = false;
                 }
             }
 
-            if (!var4) {
+            if (!hasAvailableTracks) {
                 addTextRender(gameMenuFinished, "You have completed all tracks at this level.");
             }
         }
@@ -474,27 +474,27 @@ void MenuManager::runMenu(MenuTypes menuType)
         field_354 = settingStringLevel->getCurrentOptionPos();
         field_355 = settingsStringTrack->getCurrentOptionPos();
         recordManager->method_8(settingStringLevel->getCurrentOptionPos(), settingsStringTrack->getCurrentOptionPos());
-        int var2 = recordManager->getPosOfNewRecord(settingsStringLeague->getCurrentOptionPos(), field_337);
-        field_340 = timeToString(field_337);
+        int var2 = recordManager->getPosOfNewRecord(settingsStringLeague->getCurrentOptionPos(), finishTime);
+        finishTimeStr = timeToString(finishTime);
         if (var2 >= 0 && var2 <= 2) {
-            TextRender* var3 = new TextRender("", micro);
-            var3->setDx(GameCanvas::spriteSizeX[5] + 1);
+            TextRender* finishTextRender = new TextRender("", micro);
+            finishTextRender->setDx(GameCanvas::spriteSizeX[5] + 1);
             switch (var2) {
             case 0:
-                var3->setText("First place!");
-                var3->setDrawSprite(true, 5);
+                finishTextRender->setText("First place!");
+                finishTextRender->setDrawSprite(true, 5);
                 break;
             case 1:
-                var3->setText("Second place!");
-                var3->setDrawSprite(true, 6);
+                finishTextRender->setText("Second place!");
+                finishTextRender->setDrawSprite(true, 6);
                 break;
             case 2:
-                var3->setText("Third place!");
-                var3->setDrawSprite(true, 7);
+                finishTextRender->setText("Third place!");
+                finishTextRender->setDrawSprite(true, 7);
             }
 
-            gameMenuFinished->addMenuElement(var3);
-            TextRender* var4 = new TextRender("" + field_340, micro);
+            gameMenuFinished->addMenuElement(finishTextRender);
+            TextRender* var4 = new TextRender("" + finishTimeStr, micro);
             var4->setDx(GameCanvas::spriteSizeX[5] + 1);
             gameMenuFinished->addMenuElement(var4);
             gameMenuFinished->addMenuElement(field_335);
@@ -517,7 +517,7 @@ void MenuManager::runMenu(MenuTypes menuType)
     micro->gamePhysics->method_53();
     micro->gameToMenu();
 
-    while (Micro::isInGameMenu && Micro::field_249 && currentGameMenu != nullptr) {
+    while (Micro::isInGameMenu && Micro::gameIsRunning && currentGameMenu != nullptr) {
         int64_t var20;
         if (micro->gamePhysics->isGenerateInputAI) {
             int var9;
@@ -566,7 +566,7 @@ void MenuManager::runMenu(MenuTypes menuType)
     micro->timeMs += Time::currentTimeMillis() - currentTimeMillis;
     micro->gameCanvas->isDrawingTime = true;
     if (currentGameMenu == nullptr) {
-        Micro::field_249 = false;
+        Micro::gameIsRunning = false;
     }
 }
 
@@ -1016,9 +1016,9 @@ int MenuManager::method_214()
     return settingsStringLeague->getCurrentOptionPos();
 }
 
-void MenuManager::method_215(int64_t var1)
+void MenuManager::setFinishTime(int64_t time)
 {
-    field_337 = var1;
+    finishTime = time;
 }
 
 std::vector<int8_t> MenuManager::method_216(int var1, int8_t defaultValue)

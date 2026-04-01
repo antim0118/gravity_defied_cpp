@@ -382,7 +382,7 @@ void GameCanvas::setColor(int red, int green, int blue)
 void GameCanvas::drawGame(Graphics* g)
 {
     // synchronized (objectForSyncronization) {
-    if (Micro::field_249 && !micro->field_242) {
+    if (Micro::gameIsRunning && !micro->field_242) {
         graphics = g;
 
         int var3;

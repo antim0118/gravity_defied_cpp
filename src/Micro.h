@@ -26,7 +26,7 @@ public:
     int64_t field_246 = 0;
     bool isInited = false;
     bool field_248 = false;
-    static bool field_249;
+    static bool gameIsRunning;
     inline static bool isInGameMenu;
     static int gameLoadingStateStage;
 

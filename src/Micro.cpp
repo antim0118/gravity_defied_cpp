@@ -8,7 +8,7 @@
 #include "lcdui/CanvasImpl.h"
 #include "rms/RecordStore.h"
 
-bool Micro::field_249 = false;
+bool Micro::gameIsRunning = false;
 int Micro::gameLoadingStateStage = 0;
 
 Micro::Micro()
@@ -53,25 +53,25 @@ int64_t Micro::goLoadingStep()
         break;
     case 3:
         menuManager = new MenuManager(this);
-        menuManager->initPart(1);
+        menuManager->loadingInitPart(1);
         break;
     case 4:
-        menuManager->initPart(2);
+        menuManager->loadingInitPart(2);
         break;
     case 5:
-        menuManager->initPart(3);
+        menuManager->loadingInitPart(3);
         break;
     case 6:
-        menuManager->initPart(4);
+        menuManager->loadingInitPart(4);
         break;
     case 7:
-        menuManager->initPart(5);
+        menuManager->loadingInitPart(5);
         break;
     case 8:
-        menuManager->initPart(6);
+        menuManager->loadingInitPart(6);
         break;
     case 9:
-        menuManager->initPart(7);
+        menuManager->loadingInitPart(7);
         break;
     case 10:
         gameCanvas->setMenuManager(menuManager);
@@ -138,7 +138,7 @@ void Micro::restart(bool var1)
 void Micro::destroyApp(bool var1)
 {
     (void)var1;
-    field_249 = false;
+    gameIsRunning = false;
     field_242 = true;
     menuManager->saveSmthToRecordStoreAndCloseIt();
 }
@@ -158,7 +158,7 @@ void Micro::startApp(int argc, char** argv)
 
     RecordStore::setRecordStoreDir(argv[0]);
 
-    field_249 = true;
+    gameIsRunning = true;
     // if (thread == null) {
     //     thread = new Thread(this);
     //     thread.start();
@@ -182,7 +182,7 @@ void Micro::run()
 
     int64_t var3 = 0L;
 
-    while (field_249) {
+    while (gameIsRunning) {
         int var5;
         if (gamePhysics->method_21() != menuManager->method_210()) {
             var5 = gameCanvas->loadSprites(menuManager->method_210());
@@ -254,13 +254,13 @@ void Micro::run()
                     }
 
                     goalLoop();
-                    menuManager->method_215(gameTimeMs / 10L);
+                    menuManager->setFinishTime(gameTimeMs / 10L);
                     menuManager->runMenu(MENU_FINISHED);
                     if (menuManager->method_196()) {
                         restart(true);
                     }
 
-                    if (!field_249) {
+                    if (!gameIsRunning) {
                         break;
                     }
                 }
@@ -268,7 +268,7 @@ void Micro::run()
                 field_248 = var5 != 4;
             }
 
-            var10000 = field_249;
+            var10000 = gameIsRunning;
         } catch (std::exception& var15) {
             continue;
         }
