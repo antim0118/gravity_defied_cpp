@@ -26,9 +26,9 @@ void RecordManager::method_8(int var1, int var2)
     }
 
     if (recordEnum->numRecords() > 0) {
-        std::vector<int8_t> var4;
+        std::vector<int8_t> record;
         try {
-            var4 = recordEnum->nextRecord();
+            record = recordEnum->nextRecord();
             recordEnum->reset();
             packedRecordInfoRecordId = recordEnum->nextRecordId();
         } catch (RecordStoreNotOpenException& var5) {
@@ -39,8 +39,7 @@ void RecordManager::method_8(int var1, int var2)
             return;
         }
 
-        loadRecordInfo(var4);
-        recordEnum->destroy();
+        loadRecordInfo(record);
     }
 }
 
@@ -160,14 +159,22 @@ void RecordManager::writeRecordInfo()
     if (packedRecordInfoRecordId == -1) {
         try {
             packedRecordInfoRecordId = recordStore->addRecord(packedRecordInfo, 0, 96);
-        } catch (RecordStoreNotOpenException& var1) {
-        } catch (RecordStoreException& var2) {
+        }
+        catch (RecordStoreNotOpenException &var1) {
+            return;
+        }
+        catch (RecordStoreException &var2) {
+            return;
         }
     } else {
         try {
             recordStore->setRecord(packedRecordInfoRecordId, packedRecordInfo, 0, 96);
-        } catch (RecordStoreNotOpenException& var3) {
-        } catch (RecordStoreException& var4) {
+        }
+        catch (RecordStoreNotOpenException &var3) {
+            return;
+        }
+        catch (RecordStoreException &var4) {
+            return;
         }
     }
 }
@@ -219,7 +226,9 @@ void RecordManager::deleteRecordStores()
             try {
                 // RecordStore *var10000 = recordStore;
                 RecordStore::deleteRecordStore(names[i]);
-            } catch (RecordStoreException& var3) {
+            }
+            catch (RecordStoreException &var3) {
+                return;
             }
         }
     }
@@ -231,7 +240,9 @@ void RecordManager::closeRecordStore()
         try {
             recordStore->closeRecordStore();
             return;
-        } catch (RecordStoreException& var1) {
+        }
+        catch (RecordStoreException &var1) {
+            return;
         }
     }
 }
