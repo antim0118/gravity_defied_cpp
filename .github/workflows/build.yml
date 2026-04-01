@@ -38,6 +38,9 @@ jobs:
     - name: Run make
       run: cd build && make clean && make
 
+    - name: Move EBOOT.PBP to root
+      run: cp build/EBOOT.PBP ./EBOOT.PBP
+
     - name: Upload build artifact
       if: success()
       uses: actions/upload-artifact@v4
@@ -45,4 +48,4 @@ jobs:
         name: gd-psp
         path: |
           assets/
-          build/EBOOT.PBP
+          EBOOT.PBP
