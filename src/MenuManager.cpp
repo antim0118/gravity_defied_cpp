@@ -461,7 +461,7 @@ void MenuManager::runMenu(MenuType menuType)
         micro->gamePhysics->enableGenerateInputAI();
         field_357 = true;
         break;
-    case MENU_INGAME:
+    case MENU_INGAME_PAUSE:
         field_354 = settingStringLevel->getCurrentOptionPos();
         field_355 = settingsStringTrack->getCurrentOptionPos();
         field_333->setText("Restart: " + micro->levelLoader->getName(field_354, field_355));

@@ -9,7 +9,7 @@
 enum MenuType
 {
     MENU_MAIN = 0,
-    MENU_INGAME = 1,
+    MENU_INGAME_PAUSE = 1,
     MENU_FINISHED = 2
 };
 

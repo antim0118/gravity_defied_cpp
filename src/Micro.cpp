@@ -193,7 +193,7 @@ void Micro::run()
         bool isRunning;
         try {
             if (isInGameMenu) {
-                menuManager->runMenu(MENU_INGAME);
+                menuManager->runMenu(MENU_INGAME_PAUSE);
                 if (menuManager->method_196()) {
                     restart(true);
                 }
