@@ -50,12 +50,12 @@ GameMenu::GameMenu(std::string var1, Micro* micro, GameMenu* var3, char* inputSt
     }
 
     if (inputString) {
-        field_111 = true;
+        hasInputString = true;
         nameCursorPos = 0;
         xPos = 8;
         strArr = inputString;
     } else {
-        field_111 = false;
+        hasInputString = false;
     }
 
     if (field_107 > 13) {
@@ -75,7 +75,7 @@ void GameMenu::method_69(std::string var1)
 
 void GameMenu::method_70()
 {
-    if (field_111) {
+    if (hasInputString) {
         nameCursorPos = 0;
     } else {
         if (!vector.empty()) {
@@ -157,7 +157,7 @@ void GameMenu::addMenuElement(IGameMenuElement* var1)
 
 void GameMenu::processGameActionDown()
 {
-    if (field_111) {
+    if (hasInputString) {
         if (strArr[nameCursorPos] == 32) {
             strArr[nameCursorPos] = 90;
             return;
@@ -215,7 +215,7 @@ void GameMenu::processGameActionDown()
 
 void GameMenu::processGameActionUp()
 {
-    if (field_111) {
+    if (hasInputString) {
         if (strArr[nameCursorPos] == 32) {
             strArr[nameCursorPos] = 65;
             return;
@@ -274,7 +274,7 @@ void GameMenu::processGameActionUp()
 
 void GameMenu::processGameActionUpd(int var1)
 {
-    if (field_111) {
+    if (hasInputString) {
         switch (var1) {
         case 1:
             if (nameCursorPos == 2) {
@@ -315,7 +315,7 @@ void GameMenu::render_76(Graphics* graphics)
 {
     int var2;
     int i;
-    if (field_111) {
+    if (hasInputString) {
         graphics->setColor(0, 0, 20);
         graphics->setFont(font);
         int8_t var7 = 1;

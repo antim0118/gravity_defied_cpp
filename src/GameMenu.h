@@ -29,7 +29,7 @@ private:
     int canvasWidth;
     int canvasHeight;
     int field_110;
-    bool field_111;
+    bool hasInputString;
     int nameCursorPos;
     char* strArr;
 
