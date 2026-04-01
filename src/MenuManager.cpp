@@ -452,7 +452,7 @@ int MenuManager::getCanvasWidth()
     return micro->gameCanvas->getWidth();
 }
 
-void MenuManager::runMenu(MenuTypes menuType)
+void MenuManager::runMenu(MenuType menuType)
 {
     field_377 = false;
     switch (menuType) {

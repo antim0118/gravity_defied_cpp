@@ -19,7 +19,7 @@ public:
     LevelLoader* levelLoader;
     GamePhysics* gamePhysics;
     MenuManager* menuManager;
-    bool field_242 = false;
+    bool gameIsDestroying = false;
     int numPhysicsLoops = 2;
     int64_t timeMs = 0;
     int64_t gameTimeMs = 0;

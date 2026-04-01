@@ -42,10 +42,10 @@ void GameCanvas::drawSprite(Graphics* g, int spriteNo, int x, int y)
     }
 }
 
-void GameCanvas::requestRepaint(int var1)
+void GameCanvas::requestRepaint(LoadingStage stage)
 {
-    field_184 = var1;
-    if (var1 == 0) {
+    currentLoadingStage = stage;
+    if (stage == LOADING_DONE) {
         splashImage = nullptr;
         logoImage = nullptr;
     } else {
@@ -382,12 +382,12 @@ void GameCanvas::setColor(int red, int green, int blue)
 void GameCanvas::drawGame(Graphics* g)
 {
     // synchronized (objectForSyncronization) {
-    if (Micro::gameIsRunning && !micro->field_242) {
+    if (Micro::gameIsRunning && !micro->gameIsDestroying) {
         graphics = g;
 
-        int var3;
-        if (field_184 != 0) {
-            if (field_184 == 1) {
+        int progress;
+        if (currentLoadingStage != LOADING_DONE) {
+            if (currentLoadingStage == LOADING_SHOW_LOGO) {
                 graphics->setColor(255, 255, 255);
                 graphics->fillRect(0, 0, getWidth(), getHeight());
                 if (logoImage != nullptr) {
@@ -403,8 +403,8 @@ void GameCanvas::drawGame(Graphics* g)
                 }
             }
 
-            var3 = (int)(((int64_t)(Micro::gameLoadingStateStage << 16) << 32) / 655360L >> 16);
-            method_161(var3, true);
+            progress = (int)(((int64_t)(Micro::gameLoadingStateStage << 16) << 32) / 655360L >> 16);
+            paintProgressBar(progress, true);
         } else {
             if (height != getHeight()) {
                 updateSizeAndRepaint();
@@ -437,8 +437,8 @@ void GameCanvas::drawGame(Graphics* g)
             // graphics->setFont(font);
             // graphics->drawString("FPS: " + std::to_string(fps), defaultFontWidth00, height2 - 5, 36);
 
-            var3 = gamePhysics->method_52();
-            method_161(var3, false);
+            progress = gamePhysics->method_52();
+            paintProgressBar(progress, false);
         }
 
         graphics = nullptr;
@@ -446,13 +446,13 @@ void GameCanvas::drawGame(Graphics* g)
     // }
 }
 
-void GameCanvas::method_161(int var1, bool mode)
+void GameCanvas::paintProgressBar(int progress, bool mode)
 {
     int h = mode ? height : height2;
     setColor(0, 0, 0);
     graphics->fillRect(1, h - 4, width - 2, 3);
     setColor(255, 255, 255);
-    graphics->fillRect(2, h - 3, (int)((int64_t)((width - 4) << 16) * (int64_t)var1 >> 16) >> 16, 1);
+    graphics->fillRect(2, h - 3, (int)((int64_t)((width - 4) << 16) * (int64_t)progress >> 16) >> 16, 1);
 }
 
 void GameCanvas::method_163(int var1)

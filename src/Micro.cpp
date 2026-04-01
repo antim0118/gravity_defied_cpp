@@ -96,7 +96,7 @@ void Micro::init()
     int64_t timeToLoading = 3000L;
     // Thread.yield();
     gameCanvas = new GameCanvas(this);
-    gameCanvas->requestRepaint(1);
+    gameCanvas->requestRepaint(LOADING_SHOW_LOGO);
 
     while (!gameCanvas->isShown()) {
         goLoadingStep();
@@ -108,7 +108,7 @@ void Micro::init()
         timeToLoading -= deltaTimeMs;
     }
 
-    gameCanvas->requestRepaint(2);
+    gameCanvas->requestRepaint(LOADING_SHOW_SPLASH);
 
     for (timeToLoading = 3000L; timeToLoading > 0L; timeToLoading -= deltaTimeMs) {
         deltaTimeMs = goLoadingStep();
@@ -118,7 +118,7 @@ void Micro::init()
         goLoadingStep();
     }
 
-    gameCanvas->requestRepaint(0);
+    gameCanvas->requestRepaint(LOADING_DONE);
     isInited = true;
 }
 
@@ -139,7 +139,7 @@ void Micro::destroyApp(bool var1)
 {
     (void)var1;
     gameIsRunning = false;
-    field_242 = true;
+    gameIsDestroying = true;
     menuManager->saveSmthToRecordStoreAndCloseIt();
 }
 

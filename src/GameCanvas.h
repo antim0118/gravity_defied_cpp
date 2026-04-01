@@ -12,6 +12,13 @@
 #include "Micro.h"
 #include "Timer.h"
 
+enum LoadingStage
+{
+    LOADING_DONE = 0,
+    LOADING_SHOW_LOGO = 1,
+    LOADING_SHOW_SPLASH = 2,
+};
+
 class GamePhysics;
 class MenuManager;
 
@@ -35,7 +42,7 @@ private:
     Micro* micro = nullptr;
     std::shared_ptr<Font> font;
     bool timerTriggered = false;
-    int field_184 = 1;
+    LoadingStage currentLoadingStage = LOADING_SHOW_LOGO;
     std::unique_ptr<Image> splashImage;
     std::unique_ptr<Image> logoImage;
     std::unique_ptr<Image> bodyPartsImages[3];
@@ -71,7 +78,7 @@ private:
 public:
     GameCanvas(Micro* micro);
     void drawSprite(Graphics* g, int spriteNo, int x, int y);
-    void requestRepaint(int var1);
+    void requestRepaint(LoadingStage stage);
     void method_124(bool var1);
     void updateSizeAndRepaint();
     int loadSprites(int flags);
@@ -101,7 +108,7 @@ public:
     void clearScreenWithWhite();
     void setColor(int red, int green, int blue);
     void drawGame(Graphics* g);
-    void method_161(int var1, bool mode);
+    void paintProgressBar(int progress, bool mode);
     void method_163(int var1);
     void paint(Graphics* g);
     void init(GamePhysics* gamePhysics);

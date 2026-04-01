@@ -6,7 +6,7 @@
 
 #include "IMenuManager.h"
 
-enum MenuTypes
+enum MenuType
 {
     MENU_MAIN = 0,
     MENU_INGAME = 1,
@@ -149,7 +149,7 @@ public:
     void repaint();
     int getCanvasHeight();
     int getCanvasWidth();
-    void runMenu(MenuTypes menuType);
+    void runMenu(MenuType menuType);
     void method_206(Command* var1, Displayable* var2);
     GameMenu* getGameMenu();
     void method_1(GameMenu* gm, bool var2);
