@@ -18,7 +18,7 @@ This is the C++ port of Gravity Defied for Playstation Portable, which includes 
 * **Set Elis Norman** - graphics/physics/mathematics/system/tools programming, levels design
 * **Per David Jacobsson** - physics programming, game graphics, levels design
 
-### Gravity Defied Cpp authors
+### [Gravity Defied Cpp](https://github.com/rgimad/gravity_defied_cpp) authors
 * **[rgimad](https://github.com/rgimad)** - idea & coding
 * **[AntonEvmenenko](https://github.com/AntonEvmenenko)** - coding
 * **[Max Logaev](https://github.com/mxlgv)** - coding
