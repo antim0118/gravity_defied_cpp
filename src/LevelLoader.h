@@ -53,7 +53,7 @@ public:
 
     void method_87();
     int method_88(int var1, int var2);
-    void method_89(int var1, int var2);
+    void startLoadingLevel(int league, int lvl);
 
     void method_90(int var1);
     int method_91();

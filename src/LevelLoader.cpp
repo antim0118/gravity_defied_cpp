@@ -93,11 +93,11 @@ int LevelLoader::method_88(int var1, int var2)
         field_126 = 0;
     }
 
-    method_89(field_125 + 1, field_126 + 1);
+    startLoadingLevel(field_125 + 1, field_126 + 1);
     return field_126;
 }
 
-void LevelLoader::method_89(int var1, int var2)
+void LevelLoader::startLoadingLevel(int league, int lvl)
 {
     levelFileStream->setPos(levelOffsetInFile[var1 - 1][var2 - 1]);
     if (gameLevel == nullptr) {
