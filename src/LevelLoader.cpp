@@ -26,7 +26,7 @@ LevelLoader::LevelLoader(const std::filesystem::path& mrgFilePath)
     if (!mrgFilePath.string().empty()) {
         levelFilePath = mrgFilePath;
     } else {
-        levelFilePath = "levels.mrg";
+        levelFilePath = "assets/levels.mrg";
     }
 
     loadLevels();

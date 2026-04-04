@@ -124,12 +124,5 @@ void RecordStore::log(std::string s)
 
 void RecordStore::setRecordStoreDir([[maybe_unused]] const char* progName)
 {
-    const char* homeDir = getenv("HOME");
-    if (!homeDir)
-        homeDir = getpwuid(getuid())->pw_dir;
-
-    if (!homeDir)
-        throw std::system_error(errno, std::system_category(), "Error getting home directory");
-
-    recordStoreDir = std::filesystem::path(homeDir) / "saves";
+    recordStoreDir = "saves";
 }

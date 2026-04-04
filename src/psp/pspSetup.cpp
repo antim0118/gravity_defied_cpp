@@ -39,7 +39,6 @@ int SetupCallbacks(void) {
 
 void InitGame() {
     SetupCallbacks();
-    chdir("assets");
 
     if (scePowerGetCpuClockFrequency() != 333)
         scePowerSetClockFrequency(333, 333, 166);

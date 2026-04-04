@@ -5,7 +5,7 @@
 Font::Font(FontStyle style, FontSize pointSize)
 {
     int realSize = getRealFontSize(pointSize);
-    this->ttfFont = intraFontLoadTTF("FontSansSerif.ttf", INTRAFONT_STRING_UTF8, realSize);
+    this->ttfFont = intraFontLoadTTF("assets/FontSansSerif.ttf", INTRAFONT_STRING_UTF8, realSize);
     if (!this->ttfFont || this->ttfFont == NULL)
         printf("[ERR] error loading font \"FontSansSerif.ttf\" pointSize:%d  realSize:%d \n", pointSize, realSize);
     // TTF_SetFontStyle(font, style);

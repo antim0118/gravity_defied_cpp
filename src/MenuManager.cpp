@@ -305,7 +305,7 @@ void MenuManager::loadingInitPart(int var1)
         commandBack = new Command("Back", 2, 1);
         method_1(gameMenuMain, false);
 
-        rasterImage = std::make_unique<Image>("raster.png");
+        rasterImage = std::make_unique<Image>("assets/raster.png");
 
     default:
         break;
