@@ -1,5 +1,4 @@
 #include "LevelLoader.h"
-#include "utils/FileStream.h"
 
 #include <climits>
 #include <algorithm>
@@ -25,45 +24,33 @@ LevelLoader::LevelLoader(const std::filesystem::path& mrgFilePath)
     }
 
     if (!mrgFilePath.string().empty()) {
-        FileStream* fileStream = new FileStream(mrgFilePath, std::ios::in | std::ios::binary);
-        if (!fileStream->isOpen()) {
-            throw std::system_error(errno, std::system_category(), "Failed to open " + mrgFilePath.string());
-        }
-        levelFileStream = fileStream;
+        levelFilePath = mrgFilePath;
     } else {
-        FileStream* fileStream = new FileStream("levels.mrg", std::ios::in | std::ios::binary);
-        if (!fileStream->isOpen()) {
-            throw std::system_error(errno, std::system_category(), "Failed to open " + mrgFilePath.string());
-        }
-        levelFileStream = fileStream;
+        levelFilePath = "levels.mrg";
     }
 
     loadLevels();
     method_87();
 }
 
-LevelLoader::~LevelLoader()
-{
-    delete levelFileStream;
-}
-
 void LevelLoader::loadLevels()
 {
+    FileReader fileStream(levelFilePath, std::ios::in | std::ios::binary);
     std::vector<int8_t> var3(40);
     std::vector<int> var4(3);
 
     for (int league = 0; league < 3; ++league) {
-        levelFileStream->readVariable(&var4[league], true);
+        fileStream.readVariable(&var4[league], true);
         levelOffsetInFile[league] = std::vector<int>(var4[league]);
         levelNames[league] = std::vector<std::string>(var4[league]);
 
         for (int levelNp = 0; levelNp < var4[league]; ++levelNp) {
             int var7;
-            levelFileStream->readVariable(&var7, true);
+            fileStream.readVariable(&var7, true);
             levelOffsetInFile[league][levelNp] = var7;
 
             for (int var8 = 0; var8 < 40; ++var8) {
-                levelFileStream->readVariable(&var3[var8], true);
+                fileStream.readVariable(&var3[var8], true);
                 if (var3[var8] == 0) {
                     std::string s = std::string(reinterpret_cast<char*>(var3.data()), var8);
                     std::replace(s.begin(), s.end(), '_', ' ');
@@ -99,11 +86,12 @@ int LevelLoader::method_88(int var1, int var2)
 
 void LevelLoader::startLoadingLevel(int league, int lvl)
 {
-    levelFileStream->setPos(levelOffsetInFile[var1 - 1][var2 - 1]);
+    FileReader fileStream(levelFilePath, std::ios::in | std::ios::binary);
+    fileStream.setPos(levelOffsetInFile[league - 1][lvl - 1]);
     if (gameLevel == nullptr) {
         gameLevel = new GameLevel();
     }
-    gameLevel->load(levelFileStream);
+    gameLevel->load(&fileStream);
     method_96(gameLevel);
 }
 

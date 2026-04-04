@@ -200,43 +200,43 @@ void GameLevel::renderTrackNearestGreenLine(GameCanvas* gameCanvas)
     }
 }
 
-void GameLevel::load(FileStream* inStream)
+void GameLevel::load(FileReader* reader)
 {
     init();
     int8_t c;
-    inStream->readVariable(&c, true);
+    reader->readVariable(&c, true);
     if (c == 50) {
         char var3[20];
-        inStream->readVariable(var3, false, 20);
+        reader->readVariable(var3, false, 20);
     }
 
     finishFlagPoint = 0;
     startFlagPoint = 0;
     int pointX, pointY;
     short pointsCount;
-    inStream->readVariable(&startPosX, true);
-    inStream->readVariable(&startPosY, true);
-    inStream->readVariable(&finishPosX, true);
-    inStream->readVariable(&finishPosY, true);
-    inStream->readVariable(&pointsCount, true);
-    inStream->readVariable(&pointX, true);
-    inStream->readVariable(&pointY, true);
+    reader->readVariable(&startPosX, true);
+    reader->readVariable(&startPosY, true);
+    reader->readVariable(&finishPosX, true);
+    reader->readVariable(&finishPosY, true);
+    reader->readVariable(&pointsCount, true);
+    reader->readVariable(&pointX, true);
+    reader->readVariable(&pointY, true);
     int offsetX = pointX;
     int offsetY = pointY;
     addPointSimple(pointX, pointY);
 
     for (int i = 1; i < pointsCount; ++i) {
         int8_t modeOrDx;
-        inStream->readVariable(&modeOrDx, true);
+        reader->readVariable(&modeOrDx, true);
         if (modeOrDx == -1) {
             offsetY = 0;
             offsetX = 0;
-            inStream->readVariable(&pointX, true);
-            inStream->readVariable(&pointY, true);
+            reader->readVariable(&pointX, true);
+            reader->readVariable(&pointY, true);
         } else {
             pointX = modeOrDx;
             int8_t temp;
-            inStream->readVariable(&temp, true);
+            reader->readVariable(&temp, true);
             pointY = temp;
         }
 

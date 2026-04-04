@@ -10,7 +10,7 @@
 #include "GameCanvas.h"
 #include "GameLevel.h"
 #include "TimerOrMotoPartOrMenuElem.h"
-#include "utils/FileStream.h"
+#include "utils/FileReader.h"
 
 class LevelLoader {
 private:
@@ -25,7 +25,7 @@ private:
     static int field_135;
     static int field_136;
 
-    FileStream* levelFileStream;
+    std::filesystem::path levelFilePath;
     void loadLevels();
 
 public:
@@ -47,7 +47,6 @@ public:
     int field_138;
 
     LevelLoader(const std::filesystem::path& mrgFilePath);
-    ~LevelLoader();
 
     std::string getName(int league, int level);
 

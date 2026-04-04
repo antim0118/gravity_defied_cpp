@@ -4,7 +4,7 @@
 #include <vector>
 #include <fstream>
 
-#include "utils/FileStream.h"
+#include "utils/FileReader.h"
 
 class GameCanvas;
 
@@ -47,5 +47,5 @@ public:
     /*synchronized*/ void renderTrackNearestGreenLine(GameCanvas* canvas);
     void addPointSimple(int var1, int var2);
     void addPoint(int x, int y);
-    /*synchronized*/ void load(FileStream* inStream);
+    void load(FileReader *reader);
 };
